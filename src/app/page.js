@@ -1,10 +1,11 @@
 "use client"
-import { useState,useEffect } from "react";
+import { useRef, useState } from "react";
+
 
 import ThemedBtn from "@/components/ThemedBtn";
 import ThemedInput from "@/components/ThemedInput";
 import ThemedSelect from "@/components/ThemedSelect";
-import Image from "next/image";
+
 
 export default function Home() {
   const [subscriber,setSubscriber] = useState({
@@ -12,6 +13,7 @@ export default function Home() {
     name:"",
     zodiac:""
   });
+  const ref = useRef();
 
 const checkEmailFormat = (email)=>{
     const regex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -43,9 +45,19 @@ const handleSubmit= async (e)=>  {
             body: JSON.stringify(subscriber)
         });
 
-        const data = await res.json();
-
-        console.log(data);
+        
+        if (res.ok) {
+          setSubscriber({
+            email:"",
+            name:"",
+            zodiac:""
+          });
+          ref.current.reset();
+            router.push("/success");
+        } else {
+            const data = await res.json();
+            console.error(data.error);
+        }
   }
 
   const ChangeFieldHandler = (field, value,setForm) => {
@@ -62,11 +74,11 @@ const handleSubmit= async (e)=>  {
         <h1 className="font-semibold text-3xl">
           Horoscopul Cafeluța ☕!
         </h1>
-        <p className="font-semibold text-2xl text-center">Inscrie-te pentru a primi horoscopul zilnic pe email</p>
+        <p className="font-semibold text-2xl text-center">Inscrie-te pentru a primi horoscopul zilnic la ora 10:00 pe email</p>
       </header>
       <section className="flex flex-col items-center  mt-4">
-          <p className="text-center mb-2 font-semibold">Completeaza formularu</p>
-          <form className="flex flex-col w-3/4 gap-2">
+          <p className="text-center mb-2 font-semibold">Completeaza formularul</p>
+          <form ref={ref} className="flex flex-col w-3/4 gap-2">
             <ThemedInput 
             placeholder={"Email..."}
             onChange={(e)=>{ChangeFieldHandler("email",e.target.value,setSubscriber)}}

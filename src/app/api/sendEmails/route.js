@@ -35,9 +35,9 @@ export async function GET(request) {
         for (const zodiac of zodiacSigns) {
             horoscopes[zodiac] = await getHoroscope(zodiac);
         }
-        console.log(horoscopes)
+        
          const subscribers = await prisma.subscriber.findMany();
-        console.log(subscribers[0].zodiac)
+        
         for (const subscriber of subscribers) {
             const horoscope = horoscopes[subscriber.zodiac];
 
