@@ -6,7 +6,7 @@ export async function sendEmail({
     to,
     name,
     zodiac,
-    horoscop
+    horoscope
 }) {
 
     await resend.emails.send({
@@ -18,7 +18,7 @@ export async function sendEmail({
             <h1>Bună, ${name}!</h1>
 
             <p>
-            ${horoscop}
+            ${horoscope}
             </p>
 
             <h2>${zodiac}</h2>

@@ -4,9 +4,12 @@ import {getHoroscope} from '../../../lib/horoscop'
 
 
 export async function GET(request) {
-    const auth = request.headers.get("authorization");
+   const authHeader = request.headers.get("authorization");
 
-    if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
+    if (
+        process.env.NODE_ENV === "production" &&
+        authHeader !== `Bearer ${process.env.CRON_SECRET}`
+    ) {
         return Response.json(
             { error: "Unauthorized" },
             { status: 401 }
@@ -32,9 +35,9 @@ export async function GET(request) {
         for (const zodiac of zodiacSigns) {
             horoscopes[zodiac] = await getHoroscope(zodiac);
         }
-
-        const subscribers = await prisma.subscriber.findMany();
-
+        console.log(horoscopes)
+         const subscribers = await prisma.subscriber.findMany();
+        console.log(subscribers[0].zodiac)
         for (const subscriber of subscribers) {
             const horoscope = horoscopes[subscriber.zodiac];
 
