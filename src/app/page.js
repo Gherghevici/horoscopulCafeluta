@@ -1,6 +1,6 @@
 "use client"
 import { useRef, useState } from "react";
-
+import { useRouter } from "next/navigation";
 
 import ThemedBtn from "@/components/ThemedBtn";
 import ThemedInput from "@/components/ThemedInput";
@@ -14,6 +14,7 @@ export default function Home() {
     zodiac:""
   });
   const ref = useRef();
+  const router = useRouter();
 
 const checkEmailFormat = (email)=>{
     const regex = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -53,7 +54,7 @@ const handleSubmit= async (e)=>  {
             zodiac:""
           });
           ref.current.reset();
-            router.push("/success");
+            router.push("/succes");
         } else {
             const data = await res.json();
             console.error(data.error);
@@ -74,10 +75,10 @@ const handleSubmit= async (e)=>  {
         <h1 className="font-semibold text-3xl">
           Horoscopul Cafeluța ☕!
         </h1>
-        <p className="font-semibold text-2xl text-center">Inscrie-te pentru a primi horoscopul zilnic la ora 10:00 pe email</p>
+        <p className="font-semibold text-2xl text-center">Înscrie-te pentru a primi horoscopul zilnic la ora 10:00 pe email</p>
       </header>
       <section className="flex flex-col items-center  mt-4">
-          <p className="text-center mb-2 font-semibold">Completeaza formularul</p>
+          <p className="text-center mb-2 font-semibold">Completează formularul</p>
           <form ref={ref} className="flex flex-col w-3/4 gap-2">
             <ThemedInput 
             placeholder={"Email..."}
